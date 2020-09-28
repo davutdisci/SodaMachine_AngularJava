@@ -7,7 +7,7 @@ This is the link about how client side is seen https://drive.google.com/file/d/1
  Here are the steps that you can run the client side of the Soda Machine
 1. `npm install`
 2. `npm start`
-\
-![alt text]()
+
+![](images/client-side.png)
 
 ## H2 Soda Machine Java Spring Boot Server Side
