@@ -2,7 +2,7 @@
 This application creates a soda machine that is based on Angular, TypeScript, Java Spring Boot techonologies.
 
 
-## H2  SodaMachine Angular Client Side
+## SodaMachine Angular Client Side
 This is the link about how client side is seen https://drive.google.com/file/d/1MLnMFJ0w-sLJcKAkXKo6MNEsO3mruEhR/preview \
 <br />
  Here are the steps that you can run the client side of the Soda Machine
@@ -11,12 +11,53 @@ This is the link about how client side is seen https://drive.google.com/file/d/1
 
 ![](images/client-side.png)
 
-## H2 Soda Machine Java Spring Boot Server Side
+## Soda Machine Java Spring Boot Server Side
 This backend structure is based on Java Spring Boot connecting to MySQL database locally with JDBC and querying tables with models.<br/>
 <br/>
 The backend Java is also using SCHEDULER to send a report email about how many left in inventory.
 
-#### H4 Scheduler
+#### Controller
+This part is to get the api request and send them to available services <br/>
+
+Example:<br/>
+```
+@PutMapping("/api/dispense-product")
+	public Product updateProduct(@RequestBody Product dispensedProduct, @RequestParam String couponCode) {
+		try {
+			Product result = this.productService.updateProductInventory(dispensedProduct.getProductCode());
+			if (couponCode != null) {
+				this.couponService.updateCoupon(couponCode);
+			}
+			return result;
+
+		} catch (Exception ex) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The product is out of inventory", ex);
+		}
+
+	}
+```
+
+#### Service
+This part is to make necessary changes to the data our connection point to repositories <br/>
+Example: <br/>
+```
+public Product updateProductInventory(String productCode) throws Exception {
+		Product product = productRepository.findByProductCode(productCode);
+		
+		if (product.getInventory() < 1) {
+			throw new Exception();
+		} else {
+			product.setInventory(product.getInventory() - 1);
+			Transaction newTransaction = new Transaction();
+			newTransaction.setProduct(product);
+			this.transactionService.saveTransaction(newTransaction);
+			return this.productRepository.save(product);
+		}
+
+	}
+```
+
+#### Scheduler
 This section in our backend Java is going to run everyday at 05:00 pm and send email to parties about the inventory of the products.
 ```
 @Scheduled(cron = "0 0 12 * * ?")
@@ -39,5 +80,8 @@ This section in our backend Java is going to run everyday at 05:00 pm and send e
 	}
  ```
 
-## H2 Database
+## Database
 In this project MySQL database is used. When you look at the database folder, you will see that there is sql file that you should import to your database IDE to connect to our Java Backend.
+
+## Note
+You need to update application.properties file in backend side to be able to test email sending functionality.
