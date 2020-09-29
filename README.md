@@ -83,5 +83,10 @@ This section in our backend Java is going to run everyday at 05:00 pm and send e
 ## Database
 In this project MySQL database is used. When you look at the database folder, you will see that there is sql file that you should import to your database IDE to connect to our Java Backend.
 
+## Project Structure
+The client side and backend side were designed in a way to make them extendable. <br/>
+`1.For client side; components, apis, and folder structure is made to extend the code for adding more features`<br/>
+`2.For server side, models, controllers and services were added to include any kind of modifications easily in future related to any data change and SQL related queries.`
+
 ## Note
 You need to update application.properties file in backend side to be able to test email sending functionality.
