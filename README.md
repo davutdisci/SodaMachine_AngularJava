@@ -81,7 +81,7 @@ This section in our backend Java is going to run everyday at 05:00 pm and send e
  ```
 
 ## Database
-In this project MySQL database is used. When you look at the database folder, you will see that there is sql file that you should import to your database IDE to connect to our Java Backend.
+In this project MySQL database is used. When you look at the database folder, you will see there is sql file that you should import to your database IDE to connect to our Java Backend.
 
 ## Project Structure
 The client side and backend side were designed in a way to make them extendable. <br/>
